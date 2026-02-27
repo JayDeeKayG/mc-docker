@@ -4,6 +4,7 @@ services:
     container_name: test
     environment:
       - MC_VERSION=1.17.1
+      - MC_LOADER_VERSION=0.18.2
       - MC_LOADER=fabric
     restart: unless-stopped
     ports:

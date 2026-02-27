@@ -15,5 +15,3 @@ WORKDIR /minecraft
 EXPOSE 25565
 
 ENTRYPOINT ["/bin/bash", "/scripts/Daemon.sh"]
-
-CMD ["java", "-Xmx4G", "-Xms1G", "-jar", "mc_server.jar", "nogui"]
