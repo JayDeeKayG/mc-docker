@@ -1,8 +1,8 @@
 FROM alpine:latest
 
-RUN apk update && apk add --no-cache bash wget
+RUN apk update && apk add --no-cache bash wget findutils gawk
 
-RUN apk add --no-cache openjdk21
+RUN apk add --no-cache openjdk25
 
 RUN mkdir /scripts
 RUN mkdir /config

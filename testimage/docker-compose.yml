@@ -3,9 +3,9 @@ services:
     image: mc-server
     container_name: test
     environment:
-      - MC_VERSION=1.21.11
-      - MC_LOADER_VERSION=61.1.1
-      - MC_LOADER=forge
+      - MC_VERSION=26.1-snapshot-7
+      - MC_LOADER_VERSION=idkthisdoesnotmatterrn
+      - MC_LOADER=vanilla
     restart: unless-stopped
     ports:
       - "25565:25565"
