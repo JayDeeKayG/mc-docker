@@ -1,0 +1,19 @@
+FROM alpine:latest
+
+RUN apk update && apk add --no-cache bash wget ca-certificates
+
+WORKDIR /minecraft
+
+RUN apk add --no-cache openjdk21
+
+COPY install_jar.sh /install_jar.sh
+
+RUN chmod +x /install_jar.sh
+
+RUN echo "eula=true" > eula.txt
+
+EXPOSE 25565
+
+ENTRYPOINT ["/bin/bash", "/install_jar.sh"]
+
+CMD ["java", "-Xmx4G", "-Xms1G", "-jar", "mc_server.jar", "nogui"]
