@@ -6,9 +6,16 @@ MAX_RAM_MB=$((MAX_RAM / 1024 / 1024))
 
 JVM_ARGS="$JVM_ARGS -Xmx${MAX_RAM_MB}m -Xms${MAX_RAM_MB}m"
 
+Debug=$DEBUG
+
 mode=$(</config/init)
 
 runServer() {
+
+  if [ Debug ]; then
+    echo "Starting Server"
+  fi
+
   jar_file=$(find /minecraft -maxdepth 1 -type f -name "*.jar" -print -quit)
   if [ -f "$jar_file" ]; then
     java $JVM_ARGS -jar "$jar_file" nogui
@@ -20,6 +27,10 @@ runServer() {
 case $mode in
 "0")
   # initial server installer run and then server
+  if [ Debug ]; then
+    echo "Starting Install script"
+  fi
+
   bash /scripts/Install.sh
 
   while [ ! -f /config/done ]; do
@@ -37,6 +48,11 @@ case $mode in
   ;;
 "2")
   # something placeholder
+
+  if [ Debug ]; then
+    echo "Running Reinstall"
+  fi
+
   rm -fr /minecraft/
   echo "0" >/config/init
 

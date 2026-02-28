@@ -1,0 +1,26 @@
+FROM alpine:latest
+
+ENV DEBUG=false
+
+# to do
+# ENV MC_VERSION="latest"
+ENV MC_LOADER="vanilla"
+
+RUN apk update && apk add --no-cache bash wget findutils gawk
+
+RUN apk add --no-cache openjdk25
+
+RUN mkdir /scripts
+RUN mkdir /config
+RUN mkdir /minecraft
+
+COPY jvm_args.txt /config/jvm_args.txt
+COPY init /config/init
+COPY Install.sh /scripts/Install.sh
+COPY Daemon.sh /scripts/Daemon.sh
+
+WORKDIR /minecraft
+
+EXPOSE 25565
+
+ENTRYPOINT ["/bin/bash", "/scripts/Daemon.sh"]
