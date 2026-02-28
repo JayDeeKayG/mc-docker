@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cp /scripts/files/init /data/init
-cp /scripts/files/jvm_args,txt /data/jvm_args.txt
+cp /scripts/files/jvm_args.txt /data/jvm_args.txt
 
 JVM_ARGS=$(</data/jvm_args.txt)
 MAX_RAM=$(cat /sys/fs/cgroup/memory.max)

@@ -1,5 +1,11 @@
 #!/bin/bash
 
+docker build -t mc-server ./testimage
+
+docker compose up -d
+
+docker ps -a
+
 # this will be a script to automatically
 # 1. run build on image
 #
