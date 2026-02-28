@@ -8,6 +8,9 @@ RUN mkdir /scripts
 RUN mkdir /config
 RUN mkdir /minecraft
 
+COPY jvm_args.txt /config/jvm_args.txt
+COPY init /config/init
+COPY Install.sh /scripts/Install.sh
 COPY Daemon.sh /scripts/Daemon.sh
 
 WORKDIR /minecraft

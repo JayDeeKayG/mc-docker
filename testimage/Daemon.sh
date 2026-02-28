@@ -1,39 +1,50 @@
 #!/bin/bash
 
-VERSION=$MC_VERSION
-LOADER=$MC_LOADER
-LOADER_VERSION=$MC_LOADER_VERSION
+JVM_ARGS=$(</config/jvm_args.txt)
+MAX_RAM=$(cat /sys/fs/cgroup/memory.max)
+MAX_RAM_MB=$((MAX_RAM / 1024 / 1024))
 
-vanilla_url="https://gist.githubusercontent.com/cliffano/77a982a7503669c3e1acb0a0cf6127e9/raw/6c7799c6135292befbc7a07ffde0063ecaa506c4/minecraft-server-jar-downloads.md"
+JVM_ARGS="$JVM_ARGS -Xmx${MAX_RAM_MB}m -Xms${MAX_RAM_MB}m"
 
-case $LOADER in
-vanilla)
-  url=$(wget -qO- "$vanilla_url" | grep -i "$VERSION" | awk -F'|' '{print $3}' | xargs)
-  wget -O mc_server.jar "$url"
+mode=$(</config/init)
+
+runServer() {
+  jar_file=$(find /minecraft -maxdepth 1 -type f -name "*.jar" -print -quit)
+  if [ -f "$jar_file" ]; then
+    java $JVM_ARGS -jar "$jar_file" nogui
+  else
+    echo "No jar file found!"
+  fi
+}
+
+case $mode in
+"0")
+  # initial server installer run and then server
+  bash /scripts/Install.sh
+
+  while [ ! -f /config/done ]; do
+    sleep 0.1
+  done
+
+  rm /config/done
+
+  runServer
   ;;
-fabric)
-  url="https://meta.fabricmc.net/v2/versions/loader/$VERSION/$LOADER_VERSION/1.1.1/server/jar"
-  wget -O mc_server.jar "$url"
+"1")
+  # normal run
+  runServer
+
   ;;
-forge)
-  url="https://maven.minecraftforge.net/net/minecraftforge/forge/$VERSION-$LOADER_VERSION/forge-$VERSION-$LOADER_VERSION-installer.jar"
-  wget -O mc_server.jar "$url"
-  java -jar mc_server.jar --installServer
-  rm /minecraft/mc_server.jar
+"2")
+  # something placeholder
+  rm -fr /minecraft/
+  echo "0" >/config/init
+
   ;;
 *)
-  echo "Unknown loader: $LOADER"
+  # doing nothing makes the container to be in restart loop so
+  sleep 5s
   ;;
 esac
-
-echo "eula=true" >/minecraft/eula.txt
-
-# running the server jar
-jar_file=$(find /minecraft -maxdepth 1 -type f -name "*.jar" -print -quit)
-if [ -f "$jar_file" ]; then
-  java -jar "$jar_file" nogui
-else
-  echo "No jar file found!"
-fi
 
 # still a basic script

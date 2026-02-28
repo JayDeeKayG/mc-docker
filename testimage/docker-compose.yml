@@ -9,6 +9,9 @@ services:
     restart: unless-stopped
     ports:
       - "25565:25565"
+    mem_limit: 4G
+    mem_reservation: 3G
+    memswap_limit: 5G
 
 # eee need to do volumes someday
 # but now i dont want to keep these trashy files
