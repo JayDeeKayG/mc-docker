@@ -31,12 +31,12 @@ forge)
   url="https://maven.minecraftforge.net/net/minecraftforge/forge/$VERSION-$LOADER_VERSION/forge-$VERSION-$LOADER_VERSION-installer.jar"
   wget -O mc_server.jar "$url"
   java -jar mc_server.jar --installServer
-  rm /minecraft/mc_server.jar
+  rm /data/minecraft/mc_server.jar
   ;;
 *)
   echo "Unknown loader: $LOADER"
   ;;
 esac
 
-echo "eula=true" >/minecraft/eula.txt
-touch /config/done
+echo "eula=true" >/data/minecraft/eula.txt
+touch /scripts/files/done

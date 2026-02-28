@@ -1,0 +1,56 @@
+services:
+  vanilla:
+    image: mc-server
+    container_name: vanilla-test
+    environment:
+      - DEBUG=true
+      - MC_VERSION=latest
+      - MC_LOADER=vanilla
+    restart: unless-stopped
+    ports:
+      - "25565:25565"
+    mem_limit: 2G
+    mem_reservation: 2G
+    memswap_limit: 2560m
+    volumes:
+      - ./data/minecraft-vanilla:/data
+
+  forge:
+    image: mc-server
+    container_name: forge-test
+    environment:
+      - DEBUG=true
+      - MC_LOADER=forge
+      - MC_VERSION=1.21.11
+      - MC_LOADER_VERSION=61.1.0
+    restart: unless-stopped
+    ports:
+     - "25566:25565"
+    mem_limit: 2G
+    mem_reservation: 2G
+    memswap_limit: 2560m
+    volumes:
+      - ./data/minecraft-forge:/data
+
+  
+  fabric:
+    image: mc-server
+    container_name: fabric-test
+    environment:
+      - DEBUG=true
+      - MC_LOADER=fabric
+      - MC_VERSION=1.21.11
+      - MC_LOADER_VERSION=0.18.4
+    restart: unless-stopped
+    ports: 
+      - "25567:25565"
+    mem_limit: 2G
+    mem_reservation: 2G
+    memswap_limit: 2560m
+    volumes:
+      - ./data/minecraft-fabric:/data
+    
+
+
+# eee need to do volumes someday
+# but now i dont want to keep these trashy files

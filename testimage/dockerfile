@@ -8,16 +8,15 @@ RUN apk update && apk add --no-cache bash wget findutils gawk
 
 RUN apk add --no-cache openjdk25
 
-RUN mkdir /scripts
-RUN mkdir /config
-RUN mkdir /minecraft
+RUN mkdir -p /scripts/files
+RUN mkdir -p /data/minecraft
 
-COPY jvm_args.txt /config/jvm_args.txt
-COPY init /config/init
+COPY jvm_args.txt /scripts/files/jvm_args.txt
+COPY init /scripts/files/init
 COPY Install.sh /scripts/Install.sh
 COPY Daemon.sh /scripts/Daemon.sh
 
-WORKDIR /minecraft
+WORKDIR /data/minecraft
 
 EXPOSE 25565
 

@@ -1,6 +1,9 @@
 #!/bin/bash
 
-JVM_ARGS=$(</config/jvm_args.txt)
+cp /scripts/files/init /data/init
+cp /scripts/files/jvm_args,txt /data/jvm_args.txt
+
+JVM_ARGS=$(</data/jvm_args.txt)
 MAX_RAM=$(cat /sys/fs/cgroup/memory.max)
 MAX_RAM_MB=$((MAX_RAM / 1024 / 1024))
 
@@ -8,7 +11,7 @@ JVM_ARGS="$JVM_ARGS -Xmx${MAX_RAM_MB}m -Xms${MAX_RAM_MB}m"
 
 Debug=$DEBUG
 
-mode=$(</config/init)
+mode=$(</data/init)
 
 runServer() {
 
@@ -16,7 +19,7 @@ runServer() {
     echo "Starting Server"
   fi
 
-  jar_file=$(find /minecraft -maxdepth 1 -type f -name "*.jar" -print -quit)
+  jar_file=$(find /data/minecraft -maxdepth 1 -type f -name "*.jar" -print -quit)
   if [ -f "$jar_file" ]; then
     java $JVM_ARGS -jar "$jar_file" nogui
   else
@@ -33,11 +36,11 @@ case $mode in
 
   bash /scripts/Install.sh
 
-  while [ ! -f /config/done ]; do
+  while [ ! -f /scripts/files/done ]; do
     sleep 0.1
   done
 
-  rm /config/done
+  rm /scripts/files/done
 
   runServer
   ;;
@@ -53,8 +56,8 @@ case $mode in
     echo "Running Reinstall"
   fi
 
-  rm -fr /minecraft/
-  echo "0" >/config/init
+  rm -fr /data/minecraft/
+  echo "0" >/data/init
 
   ;;
 *)
