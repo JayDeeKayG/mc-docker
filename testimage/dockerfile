@@ -1,9 +1,7 @@
 FROM alpine:latest
 
 ENV DEBUG=false
-
-# to do
-# ENV MC_VERSION="latest"
+ENV MC_VERSION="latest"
 ENV MC_LOADER="vanilla"
 
 RUN apk update && apk add --no-cache bash wget findutils gawk

@@ -8,7 +8,19 @@ vanilla_url="https://gist.githubusercontent.com/cliffano/77a982a7503669c3e1acb0a
 
 case $LOADER in
 vanilla)
-  url=$(wget -qO- "$vanilla_url" | grep -i "$VERSION" | awk -F'|' '{print $3}' | xargs)
+
+  case $VERSION in
+  "latest")
+    url=$(wget -qO- "$vanilla_url" | grep -i "1." | grep -v "snapshot" | grep -v "pre" | head -n 1 | awk -F'|' '{print $3}' | xargs)
+    ;;
+  "latest-snapshot")
+    url=$(wget -qO- "$vanilla_url" | grep -i "snapshot" | head -n 1 | awk -F'|' '{print $3}' | xargs)
+    ;;
+  *)
+    url=$(wget -qO- "$vanilla_url" | grep -i "$VERSION" | awk -F'|' '{print $3}' | xargs)
+    ;;
+  esac
+
   wget -O mc_server.jar "$url"
   ;;
 fabric)
